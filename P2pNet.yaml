@@ -1,0 +1,22 @@
+MODEL:
+  META_ARCHITECTURE: "P2PNet"
+  PIXEL_MEAN: [103.530, 116.280, 123.675]
+  PIXEL_STD: [57.375, 57.12, 58.395]
+  BACKBONE:
+    NAME: "build_p2p_vgg_backbone"
+    ARCH: "vgg16_bn"
+    PRETRAINED: True
+  P2PNET:
+    THRESHOLD: 0.5
+    NUM_CLASSES: 2
+INPUT:
+  FORMAT: "BGR"
+DATASETS:
+  TRAIN: ("points_train",)
+  TEST: ("points_val",)
+SOLVER:
+  LR_SCHEDULER_NAME: "StepLR"
+  CHECKPOINT_PERIOD: 10000
+TEST:
+  EVAL_PERIOD: 1000000000
+OUTPUT_DIR: "./results"
