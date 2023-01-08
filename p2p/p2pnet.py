@@ -53,6 +53,7 @@ class P2PNet(nn.Module):
             self.num_classes
         )
 
+        self.regression_scale_coeff = cfg.MODEL.P2PNET.REGRESSION_SCALE_COEFF
         self.threshold = cfg.MODEL.P2PNET.THRESHOLD
 
         self.register_buffer("pixel_mean", torch.Tensor(cfg.MODEL.PIXEL_MEAN).view(-1, 1, 1))
@@ -79,7 +80,7 @@ class P2PNet(nn.Module):
 
         batch_size = features[0].shape[0]
         # run the regression and classification branch
-        regression = self.regression(features_fpn[self.decoder_feature_to_branches]) * 100 # 8x
+        regression = self.regression(features_fpn[self.decoder_feature_to_branches]) * self.regression_scale_coeff
         classification = self.classification(features_fpn[self.decoder_feature_to_branches])
         anchor_points = self.anchor_points(images.tensor).repeat(batch_size, 1, 1)
         # decode the points as prediction

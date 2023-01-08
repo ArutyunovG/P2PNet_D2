@@ -34,8 +34,5 @@ class ClassificationModel(nn.Module):
 
         out1 = out.permute(0, 2, 3, 1)
 
-        batch_size, width, height, _ = out1.shape
 
-        out2 = out1.view(batch_size, width, height, self.num_anchor_points, self.num_classes)
-
-        return out2.contiguous().view(x.shape[0], -1, self.num_classes)
+        return out1.contiguous().view(x.shape[0], -1, self.num_classes)
